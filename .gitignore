@@ -1,0 +1,25 @@
+
+# Dependencies
+node_modules
+
+# Enviroment variabls
+.env
+.env.*
+
+# Build folders
+dist/
+build/
+
+# logs
+logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Vite
+.vite/
+
+# Coverage
+coverage/

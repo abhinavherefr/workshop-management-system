@@ -1,0 +1,17 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Prata&family=Quicksand:wght@300..700&display=swap');
+@import "tailwindcss";
+
+
+body {
+  margin: 0;
+  background-color: #17181f;
+  font-family: Quicksand;
+}
+
+.shapegrid-canvas {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
