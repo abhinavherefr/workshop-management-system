@@ -349,3 +349,25 @@ export const getVehicleHistory = async (req, res) => {
         })
     }
 }
+
+export const getVehicleById = async (req, res) => {
+
+    const vehicle = await Vehicle.findById(req.params.id)
+
+    const history = await Vehicle.find({
+        vehicleNumber: vehicle.vehicleNumber
+    }).sort({ createdAt : -1 })
+
+    if(!vehicle){
+        return res.json({
+            success: false,
+            message: "Vehicle does not exist"
+        })
+    }
+
+    res.json({
+        success: true,
+        vehicle,
+        history
+    })
+}

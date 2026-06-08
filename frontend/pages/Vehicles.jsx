@@ -134,8 +134,9 @@ const Vehicles = () => {
                 })
                     .map((item) => (
                         <div
+                            onClick={() => navigate(`/vehicle/${item._id}`)}
                             key={item._id}
-                            className='bg-[#1a1f2b] rounded-2xl p-5 shadow-lg hover:bg-[#232a3a] hover:scale-[1.02] hover:shadow-2xl transition duration-400 border border-transparent hover:border-[#2a3142]'
+                            className='bg-[#1a1f2b] rounded-2xl p-5 shadow-lg hover:bg-[#232a3a] hover:scale-[1.02] hover:shadow-2xl transition duration-400 border border-transparent hover:border-[#2a3142] cursor-pointer'
                         >
                             <div className='flex justify-between items-start mb-5'>
                                 <div className="">

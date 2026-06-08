@@ -8,6 +8,7 @@ import AddVehicle from '../pages/AddVehicle.jsx'
 import Vehicles from '../pages/Vehicles.jsx';
 import Layout from '../components/Layout.jsx';
 import VehicleHistory from '../pages/VehicleHistory.jsx';
+import VehicleDetails from '../pages/VehicleDetails.jsx';
 
 
 const App = () => {
@@ -48,10 +49,16 @@ const App = () => {
                   <VehicleHistory />
                 </ProtectedRoute>
               }
-              
               ></Route>
 
+              <Route path='/vehicle/:id' element={<VehicleDetails />}>
+
+              </Route>
+
             </Route>
+
+
+
           </Routes>
         </div>
       }
