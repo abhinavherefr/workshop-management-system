@@ -12,7 +12,7 @@ export const registerUser = async (req, res) => {
     try {
         const { name, email, password } = req.body;
 
-        if (!validator.isEmail(email)) {
+        if (!validator.status(400).isEmail(email)) {
             return res.json({
                 success: false,
                 message: "Please enter a valid email"
@@ -21,14 +21,14 @@ export const registerUser = async (req, res) => {
 
         const exist = await User.findOne({ email })
         if (exist) {
-            return res.json({
+            return res.status(409).json({
                 success: false,
                 message: "Email already registered"
             })
         }
 
         if (password.length < 8) {
-            return res.json({
+            return res.status(400).json({
                 success: false,
                 message: "Password too short"
             })
@@ -53,7 +53,7 @@ export const registerUser = async (req, res) => {
         })
 
     } catch (error) {
-        return res.json({
+        return res.status(500).json({
             success: false,
             message: error.message
         })
@@ -68,7 +68,7 @@ export const loginUser = async (req, res) => {
         const user = await User.findOne({ email });
 
         if (!user) {
-            return res.json({
+            return res.status(401).json({
                 success: false,
                 message: "User does not exist."
             });
@@ -77,7 +77,7 @@ export const loginUser = async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password);
 
         if (!isMatch) {
-            return res.json({
+            return res.status(401).json({
                 success: false,
                 message: "Invalid login credentials."
             });

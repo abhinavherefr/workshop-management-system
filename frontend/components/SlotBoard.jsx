@@ -25,7 +25,7 @@ const SlotBoard = ({ vehicles }) => {
                     const vehicle = getVehicleBySlot(slotNumber)
 
                     return (
-                        <div className={`text-xs sm:text-sm hover:scale-[1.02] transition duration-200 lg:text-lg p-6  flex flex-col items-center lg:p-8 justify-center ${vehicle ? "border border-red-600/60 border-b-0" : "border border-b-0 border-green-400/40"}`}>
+                        <div key={slotNumber} className={`text-xs sm:text-sm hover:scale-[1.02] transition duration-200 lg:text-lg p-6  flex flex-col items-center lg:p-8 justify-center ${vehicle ? "border border-red-600/60 border-b-0" : "border border-b-0 border-green-400/40"}`}>
                             <p className='underline'>Slot {slotNumber}</p>
 
                             {vehicle ? (

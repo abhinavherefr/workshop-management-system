@@ -47,7 +47,6 @@ const Login = () => {
                     setToken(response.data.token)
                     localStorage.setItem('token', response.data.token)
                     navigate(redirectTo, { replace: true })
-                    console.log('user registered successfully with token: ', response.data.token)
                     setName('')
                     setEmail('')
                     setPassword('')
@@ -55,11 +54,9 @@ const Login = () => {
                 }
                 else{
                     toast.error(response.data.message)
-                    console.log(response.data.message)
                 }
             }
         } catch (error) {
-            console.log(error.message)
             toast.error(error.response?.data?.message || "Unable to connect to the server")
         }
     }

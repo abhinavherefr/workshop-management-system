@@ -16,53 +16,55 @@ const App = () => {
 
 
   return (
-    <div className="">
+    <>
       <ToastContainer />
       {
-        <div className='text-3xl'>
 
-          <Routes>
-            <Route path='/login' element={<Login />} />
 
-            <Route element={<Layout />}>
+        <Routes>
+          <Route path='/login' element={<Login />} />
 
-              <Route path='/' element={
-                <ProtectedRoute>
-                  <Home />
-                </ProtectedRoute>
-              } />
+          <Route element={<Layout />}>
 
-              <Route path='/add' element={
-                <ProtectedRoute>
-                  <AddVehicle />
-                </ProtectedRoute>
-              } />
+            <Route path='/' element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            } />
 
-              <Route path='/all' element={
-                <ProtectedRoute>
-                  <Vehicles />
-                </ProtectedRoute>
-              }></Route>
+            <Route path='/add' element={
+              <ProtectedRoute>
+                <AddVehicle />
+              </ProtectedRoute>
+            } />
 
-              <Route path='/history' element={
-                <ProtectedRoute>
-                  <VehicleHistory />
-                </ProtectedRoute>
-              }
-              ></Route>
+            <Route path='/all' element={
+              <ProtectedRoute>
+                <Vehicles />
+              </ProtectedRoute>
+            }></Route>
 
-              <Route path='/vehicle/:id' element={<VehicleDetails />}>
-
-              </Route>
-
+            <Route path='/history' element={
+              <ProtectedRoute>
+                <VehicleHistory />
+              </ProtectedRoute>
+            }
+            ></Route>
+            <Route path='/vehicle/:id' element={
+              <ProtectedRoute>
+                <VehicleDetails />
+              </ProtectedRoute>
+            }>
             </Route>
-
-
-
-          </Routes>
-        </div>
+          </Route>
+          <Route path='*' element={
+            <div className='min-h-screen bg-[#0f1117] text-white flex items-center justify-center text-2xl'>
+              404 - Page not found
+            </div>
+          }></Route>
+        </Routes>
       }
-    </div>
+    </>
   )
 }
 

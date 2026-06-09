@@ -32,14 +32,14 @@ export const createVehicle = async (req, res) => {
             .toUpperCase();
 
         if (!normalizedVehicleNumber) {
-            return res.json({
+            return res.status(400).json({
                 success: false,
                 message: "Vehicle number missing"
             })
         }
 
         if (!vehicleRegex.test(normalizedVehicleNumber)) {
-            return res.json({
+            return res.status(400).json({
                 success: false,
                 message: "Please enter a valid vehicle number"
             })
@@ -64,7 +64,7 @@ export const createVehicle = async (req, res) => {
         }
 
         if (!/^\d{10}$/.test(phone)) {
-            return res.json({
+            return res.status(400).json({
                 success: false,
                 message: "Please enter a valid phone number"
             })
@@ -75,8 +75,8 @@ export const createVehicle = async (req, res) => {
         if (req.file) {
             const result = await streamUpload(req.file.buffer);
 
-            if(!result || !result.secure_url){
-                return res.json({
+            if (!result || !result.secure_url) {
+                return res.status(500).json({
                     success: false,
                     message: "Image upload failed"
                 })
@@ -105,7 +105,7 @@ export const createVehicle = async (req, res) => {
             vehicle,
         })
     } catch (error) {
-        res.json({
+        res.status(500).json({
             success: false,
             message: error.message
         })
@@ -121,7 +121,7 @@ export const getVehicles = async (req, res) => {
             vehicles,
         });
     } catch (error) {
-        res.json({
+        res.status(500).json({
             success: false,
             message: error.message,
         });
@@ -136,7 +136,7 @@ export const updateVehicleStatus = async (req, res) => {
         const vehicle = await Vehicle.findById(id);
 
         if (!vehicle) {
-            return res.json({ success: false, message: "Vehicle not und" });
+            return res.status(404).json({ success: false, message: "Vehicle not und" });
         }
 
         const freedSlot = vehicle.slotNumber;
@@ -172,7 +172,7 @@ export const updateVehicleStatus = async (req, res) => {
         });
 
     } catch (error) {
-        return res.json({
+        return res.status(500).json({
             success: false,
             message: error.message
         });
@@ -186,11 +186,11 @@ export const deleteVehicle = async (req, res) => {
         const vehicle = await Vehicle.findById(id);
 
         if (!vehicle) {
-            return res.json({ success: false, message: "Vehicle not found" })
+            return res.status(404).json({ success: false, message: "Vehicle not found" })
         }
 
         if (vehicle.status !== "Completed") {
-            return res.json({
+            return res.status(400).json({
                 success: false,
                 message: "Only completed vehicles can be deleted"
             })
@@ -203,7 +203,7 @@ export const deleteVehicle = async (req, res) => {
             message: "Vehicle deleted"
         })
     } catch (error) {
-        res.json({
+        res.status(500).json({
             success: false,
             message: error.message
         })
@@ -254,7 +254,7 @@ export const searchVehicles = async (req, res) => {
         const query = req.query.query;
 
         if (!query) {
-            return res.json({
+            return res.status(400).json({
                 success: false,
                 message: "Query required"
             })
@@ -296,7 +296,7 @@ export const searchVehicles = async (req, res) => {
             results
         });
     } catch (error) {
-        return res.json({
+        return res.status(500).json({
             success: false,
             message: error.message
         });
@@ -308,7 +308,7 @@ export const getVehicleHistory = async (req, res) => {
     try {
         const query = req.query.query;
         if (!query) {
-            return res.json({
+            return res.status(400).json({
                 success: false,
                 message: "Query required"
             })
@@ -343,7 +343,7 @@ export const getVehicleHistory = async (req, res) => {
         })
 
     } catch (error) {
-        return res.json({
+        return res.status(500).json({
             success: false,
             message: error.message
         })
@@ -351,23 +351,29 @@ export const getVehicleHistory = async (req, res) => {
 }
 
 export const getVehicleById = async (req, res) => {
+    try {
+        const vehicle = await Vehicle.findById(req.params.id)
 
-    const vehicle = await Vehicle.findById(req.params.id)
+        const history = await Vehicle.find({
+            vehicleNumber: vehicle.vehicleNumber
+        }).sort({ createdAt: -1 })
 
-    const history = await Vehicle.find({
-        vehicleNumber: vehicle.vehicleNumber
-    }).sort({ createdAt : -1 })
+        if (!vehicle) {
+            return res.status(404).json({
+                success: false,
+                message: "Vehicle does not exist"
+            })
+        }
 
-    if(!vehicle){
-        return res.json({
+        res.json({
+            success: true,
+            vehicle,
+            history
+        })
+    } catch (error) {
+        res.status(500).json({
             success: false,
-            message: "Vehicle does not exist"
+            message: error.message
         })
     }
-
-    res.json({
-        success: true,
-        vehicle,
-        history
-    })
 }

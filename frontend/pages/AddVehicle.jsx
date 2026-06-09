@@ -17,72 +17,65 @@ const AddVehicle = () => {
     const [vehicleModel, setVehicleModel] = useState('')
     const [customerFound, setCustomerFound] = useState(false)
     const [image, setImage] = useState(null)
+    const [submitting, setsubmitting] = useState(false)
 
     const fileInputRef = useRef(null)
 
     const submitHandler = async (e) => {
         e.preventDefault();
 
-        const formData = new FormData()
+        try {
+            setsubmitting(true)
 
-        formData.append("ownerName", customerName);
-        formData.append("phone", phoneNumber);
-        formData.append("vehicleNumber", vehicleNumber);
-        formData.append("vehicleType", vehicleType);
-        formData.append("problemDescription", problemDesc);
-        formData.append("serviceType", serviceType);
-        formData.append("odometerReading", odometerReading);
-        formData.append("vehicleModel", vehicleModel);
+            const formData = new FormData()
 
-        formData.append("image", image);
-        const response = await axios.post(
-            `${backendurl}/api/vehicle/create`,
-            formData,
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
+            formData.append("ownerName", customerName);
+            formData.append("phone", phoneNumber);
+            formData.append("vehicleNumber", vehicleNumber);
+            formData.append("vehicleType", vehicleType);
+            formData.append("problemDescription", problemDesc);
+            formData.append("serviceType", serviceType);
+            formData.append("odometerReading", odometerReading);
+            formData.append("vehicleModel", vehicleModel);
+            if (image) {
+                formData.append("image", image);
+            }
+
+
+            const response = await axios.post(
+                `${backendurl}/api/vehicle/create`,
+                formData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    }
+                }
+            )
+
+            if (response.data.success) {
+
+                setCustomerName('')
+                setPhoneNumber('')
+                setvehicleNumber('')
+                setVehicleType('Car')
+                setProblemDesc('')
+                setServiceType('Basic')
+                setOdometerReading('')
+                setVehicleModel('')
+                toast.success("Entry created successfully.")
+                setCustomerFound(false)
+                setImage(null)
+                if (fileInputRef.current) {
+                    fileInputRef.current.value = ""
                 }
             }
-        )
-
-        // console.log()
-
-        // const response = await axios.post(`${backendurl}/api/vehicle/create`, {
-        //     ownerName: customerName,
-        //     phone: phoneNumber,
-        //     vehicleNumber,
-        //     vehicleType,
-        //     problemDescription: problemDesc,
-        //     serviceType,
-        //     odometerReading,
-        //     vehicleModel
-        // },
-        //     {
-        //         headers: {
-        //             Authorization: `Bearer ${token}`
-        //         }
-        //     })
-
-        if (response.data.success) {
-            console.log("Vehicle added")
-
-            setCustomerName('')
-            setPhoneNumber('')
-            setvehicleNumber('')
-            setVehicleType('Car')
-            setProblemDesc('')
-            setServiceType('Basic')
-            setOdometerReading('')
-            setVehicleModel('')
-            toast.success("Entry created successfully.")
-            setCustomerFound(false)
-            setImage(null)
-            if (fileInputRef.current) {
-                fileInputRef.current.value = ""
+            else {
+                toast.error(response.data.message)
             }
-        }
-        else {
-            toast.error(response.data.message)
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Failed to add vehicle")
+        } finally {
+            setsubmitting(false)
         }
     }
 
@@ -203,7 +196,9 @@ const AddVehicle = () => {
                         </select>
                     </div>
                     <textarea value={problemDesc} onChange={(e) => { setProblemDesc(e.target.value) }} rows={5} required className='text-sm border-gray-700 p-2 focus:outline-none w-full focus:border-orange-600 border mt-[-15px]' placeholder='Problem Description' />
-                    <button type='submit' className='bg-orange-600 rounded-2xl text-white cursor-pointer text-lg p-3 focus:outline-none focus:border-white focus:border'>Enter Vehicle</button>
+                    <button type='submit' disabled={submitting} className='bg-orange-600 rounded-2xl text-white cursor-pointer text-lg p-3 focus:outline-none focus:border-white focus:border disabled:opacity-50 disabled:cursor-not-allowed'>
+                        {submitting ? "Submitting..." : "Enter Vehicle"}
+                    </button>
                 </div>
             </div>
         </form>

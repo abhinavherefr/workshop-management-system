@@ -35,7 +35,7 @@ const VehicleHistory = () => {
                 setVehicles([])
                 toast.error(response.data.message)
             }
-            console.log(response.data)
+            // console.log(response.data)
             setLoading(false)
 
         } catch (error) {

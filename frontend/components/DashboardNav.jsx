@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { AuthContext } from '../src/context/AuthContext'
 import { useNavigate } from 'react-router-dom';
 
@@ -17,7 +17,8 @@ const DashboardNav = ({ setShowSidebar }) => {
                         <p className=" text-gray-500 text-lg mt-1">Manage vehicles and workshop activity</p>
                     </div>
                 </div>
-                <div
+
+                <button
                     className='cursor-pointer text-white px-3 py-3 w-32 bg-red-500 hover:bg-red-600 rounded-3xl text-sm flex justify-center hover:scale-105 transition'
                     onClick={() => {
                         setToken(null)
@@ -25,8 +26,9 @@ const DashboardNav = ({ setShowSidebar }) => {
                         navigate("/login")
                     }}
                 >
-                    <button className=''>Log out</button>
-                </div>
+                    Log out
+                </button>
+
             </div>
         </div>
     )

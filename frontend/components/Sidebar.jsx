@@ -1,14 +1,7 @@
-import React from 'react'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 const Sidebar = ({ showSidebar, setShowSidebar }) => {
 
-    const navigate = useNavigate()
-
-    const handleClick = (path) => {
-        navigate(path)
-        setShowSidebar(false)
-    }
 
     const linkStyle = ({ isActive }) =>
         `flex items-center gap-3 px-4 py-3 rounded-xl transition ${isActive ? "bg-[#2a3142] text-white" : "text-gray-400 hover:bg-[#232a3a] hover:text-white"}`
@@ -27,10 +20,10 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
 
 
             <ul className='flex flex-col gap-3 text-lg mt-2'>
-                <li><NavLink onClick={handleClick} to="/" className={linkStyle}>Home</NavLink></li>
-                <li><NavLink onClick={handleClick} to="/add" className={linkStyle}>Add Vehicles</NavLink></li>
-                <li><NavLink onClick={handleClick} to="/all" className={linkStyle}>All Vehicles</NavLink></li>
-                <li><NavLink onClick={handleClick} to="/history" className={linkStyle}>Vehicle History</NavLink></li>
+                <li><NavLink onClick={() => setShowSidebar(false)} to="/" className={linkStyle}>Home</NavLink></li>
+                <li><NavLink onClick={() => setShowSidebar(false)} to="/add" className={linkStyle}>Add Vehicles</NavLink></li>
+                <li><NavLink onClick={() => setShowSidebar(false)} to="/all" className={linkStyle}>All Vehicles</NavLink></li>
+                <li><NavLink onClick={() => setShowSidebar(false)} to="/history" className={linkStyle}>Vehicle History</NavLink></li>
             </ul>
         </div>
     )

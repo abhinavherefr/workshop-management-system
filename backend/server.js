@@ -15,7 +15,7 @@ const port = process.env.PORT || 4000
 // Middlewares
 app.use(express.json())
 app.use(cors({
-    origin: "*", credentials: true
+    origin: "http://localhost:5173", credentials: true
 }))
 
 //  API Endpoints

@@ -1,7 +1,8 @@
 import axios from "axios"
 import { useContext, useEffect, useState } from "react"
 import { AuthContext } from "../src/context/AuthContext"
-import { useParams } from "react-router"
+import { useNavigate, useParams } from "react-router"
+import { toast } from "react-toastify"
 
 
 const VehicleDetails = () => {
@@ -11,23 +12,36 @@ const VehicleDetails = () => {
     const { backendurl, token } = useContext(AuthContext)
     const { id } = useParams();
     const prevHistory = history.slice(1)
+    const navigate = useNavigate()
 
     useEffect(() => {
         const fetchVehicle = async () => {
-            const response = await axios.get(`${backendurl}/api/vehicle/${id}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
-            setVehicle(response.data.vehicle)
-            setHistory(response.data.history)
-            console.log(response.data);
+            try {
+                const response = await axios.get(`${backendurl}/api/vehicle/${id}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                setVehicle(response.data.vehicle)
+                setHistory(response.data.history)
+            } catch (error) {
+                toast.error("Vehicle not found")
+                navigate("/all")
+            }
+
         }
         fetchVehicle(id)
-    }, [])
+    }, [id])
+
+    if(!vehicle) return (
+        <div className="min-h-screen bg-[#0f1117] text-white items-center justify-center">
+            <p className="text-gray-400">Loading...</p>
+        </div>
+    )
 
     return (
         <div className="min-h-screen bg-[#0f1117] text-white p-6">
+            <button onClick={() => navigate(-1)} className="mb-4 text-sm text-gray-400 hover:text-white transition cursor-pointer"> ← Back </button>
             <div className="max-w-5xl mx-auto space-y-6 bg-[#1a1f2b] rounded-2xl p-6 grid md:grid-cols-2 gap-6">
                 <div className="space-y-5">
                     <div className="">

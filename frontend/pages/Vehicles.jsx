@@ -7,13 +7,15 @@ import SlotBoard from '../components/SlotBoard';
 
 
 const Vehicles = () => {
-    
+
     const { backendurl, token, setToken } = useContext(AuthContext);
-    
+
     const [vehicles, setVehicles] = useState([])
     const [search, setSearch] = useState("")
+    const [loading, setLoading] = useState(true)
+
     const navigate = useNavigate();
-    
+
     const getStatusStyle = (status) => {
         switch (status) {
             case "Pending":
@@ -38,9 +40,7 @@ const Vehicles = () => {
                     }
                 }
             );
-    
-            fetchVehicles();
-
+            await fetchVehicles();
         } catch (error) {
             console.table(error.message);
         }
@@ -62,13 +62,15 @@ const Vehicles = () => {
                 setVehicles(prev => prev.filter(v => v._id !== id))
             }
         } catch (error) {
-            console.log(error.message)
+            toast.error(error.message)
         }
 
     }
 
     const fetchVehicles = async () => {
         try {
+            setLoading(true);
+
             const response = await axios.get(`${backendurl}/api/vehicle/all`, {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -76,10 +78,10 @@ const Vehicles = () => {
             })
             if (response.data.success) {
                 setVehicles(response.data.vehicles)
-                console.log(response.data.vehicles)
+                // console.log(response.data.vehicles)
             }
             else {
-                console.log(response.data.message)
+                toast.error(response.data.message)
             }
         } catch (error) {
             if (error.response?.status === 401) {
@@ -88,7 +90,10 @@ const Vehicles = () => {
                 navigate("/login")
                 return;
             }
-            console.log(error.message)
+            toast.error(error.message)
+        }
+        finally {
+            setLoading(false)
         }
     }
 
@@ -96,10 +101,17 @@ const Vehicles = () => {
         fetchVehicles()
     }, [backendurl, token])
 
-
+    if (loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center text-white">
+                Loading vehicles...
+            </div>
+        )
+    }
 
     return (
         <div className='min-h-screen p-6'>
+
             <SlotBoard vehicles={vehicles} />
             <div className="mb-6">
                 <input type="text"
@@ -150,15 +162,19 @@ const Vehicles = () => {
 
                                 <img
                                     src="/delete.png" className='w-5 h-5 cursor-pointer opacity-70 hover:opacity-100 hover:scale-110 transition' alt=""
-                                    onClick={() => deleteVehicle(item._id, item.status)}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        deleteVehicle(item._id, item.status)
+                                    }
+                                    }
                                 />
 
                             </div>
 
                             {item.vehicleImage && (
                                 <img src={item.vehicleImage}
-                                alt={item.vehicleNumber}
-                                className='w-full h-48 object-cover rounded-xl mb-4' />
+                                    alt={item.vehicleNumber}
+                                    className='w-full h-48 object-cover rounded-xl mb-4' />
                             )}
 
                             <div className='space-y-2 text-sm'>
@@ -188,8 +204,11 @@ const Vehicles = () => {
 
                                 {item.status === "In Progress" && (
                                     <button
-                                    onClick={() => { updateStatus(item._id, "Completed") }}
-                                    className='text-sm px-3 py-1 rounded-xl bg-green-600 hover:bg-green-700 text-white transition'>
+                                        onClick={(e) => {
+                                            e.stopPropagation()
+                                            updateStatus(item._id, "Completed")
+                                        }}
+                                        className='text-sm px-3 py-1 rounded-xl bg-green-600 hover:bg-green-700 text-white transition'>
                                         Mark Completed
                                     </button>
                                 )}
