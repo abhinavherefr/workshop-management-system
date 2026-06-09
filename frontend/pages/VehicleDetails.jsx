@@ -37,12 +37,27 @@ const VehicleDetails = () => {
                         <p className="text-gray-400">{vehicle?.vehicleNumber}</p>
                     </div>
 
-                    <div className="bg-[#111522] p-4 rounded-xl text-sm space-y-2">
+                    <div className="bg-[#111522] p-4 rounded-xl text-sm space-y-3">
                         <p><span className="text-gray-500">Phone: </span>{vehicle?.phone}</p>
                         <p><span className="text-gray-500">Model: </span>{vehicle?.vehicleModel}</p>
                         <p><span className="text-gray-500">Type: </span>{vehicle?.vehicleType}</p>
-                        <p><span className="text-gray-500">Services: </span>{vehicle?.serviceType} service</p>
-                        <p><span className="text-gray-500">Status: </span>{vehicle?.status}</p>
+                        <p className="">
+                            <span className="text-gray-500">Created:</span>{" "}
+                            {new Date(vehicle?.createdAt).toLocaleDateString()}
+                        </p>
+                        <p className="mb-3">
+                            <span className="text-gray-500">Odometer:</span>{" "}
+                            {vehicle?.odometerReading} km
+                        </p>
+                        <div className="flex flex-wrap gap-2 pt-2">
+                            <span className={`px-3 py-1 rounded-full text-xs font-semibold ${vehicle?.status === "Pending" ? "bg-red-500/20 text-red-400"
+                                : vehicle?.status === "In Progress" ? "bg-yellow-500/20 text-yellow-400"
+                                    : "bg-green-500/20 text-green-400"
+                                }`}>
+                                {vehicle?.status}
+                            </span>
+                            <span className="bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-xs">Services: {vehicle?.serviceType} service </span>
+                        </div>
                     </div>
 
                     <div className="bg-[#111522] p-4 rounded-xl">

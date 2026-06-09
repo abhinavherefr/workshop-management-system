@@ -11,13 +11,19 @@ const Layout = () => {
         <div className="min-h-screen flex bg-[#0f1117] text-white">
 
             {/* SIDEBAR */}
-            {showSidebar && <Sidebar />}
+            <Sidebar showSidebar={showSidebar} setShowSidebar={setShowSidebar} />
+
+            {showSidebar && (
+                <div className="fixed inset-0 bg-black/50 z-40 md:hidden" onClick={() => setShowSidebar(false)}></div>
+            )}
 
             {/* MAIN AREA */}
             <div className="flex-1 flex flex-col">
 
                 {/* NAVBAR INSIDE MAIN AREA */}
                 <DashboardNav setShowSidebar={setShowSidebar} />
+
+
 
                 {/* PAGE CONTENT */}
                 <div className="flex-1 p-4">

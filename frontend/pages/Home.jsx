@@ -1,7 +1,6 @@
-import { act, use, useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../src/context/AuthContext'
 import { useNavigate } from 'react-router-dom'
-import DashboardNav from '../components/DashboardNav';
 import { toast } from 'react-toastify';
 import axios from "axios"
 
@@ -35,9 +34,11 @@ const Home = () => {
   const inProgressVehicles = vehicles.filter(item => item.status === "In Progress").length
   const completedVehicles = vehicles.filter(item => item.status === "Completed").length
 
-  const filteredVehicles = vehicles.filter(item => {
-    if (!activeFilter) return false;
+  const filteredVehicles = vehicles.filter(item =>  {
+
+    if(activeFilter === "All") return true;
     return item.status === activeFilter
+    
   })
 
   console.log(vehicles)
@@ -46,7 +47,7 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-[#0f1117] text-white">
 
-      <div className="p-4 flex flex-col lg:flex-row gap-6">
+      <div className="p-4 flex flex-col lg:flex-row gap-6 sm:items-start">
 
         {/* LEFT SIDE - CARDS */}
         <div className="lg:w-1/3 grid grid-cols-1 gap-6">
@@ -76,6 +77,15 @@ const Home = () => {
             <h2 className='text-gray-400 text-sm'>Completed</h2>
             <p className='text-3xl font-bold mt-3'>{completedVehicles}</p>
             <p className='text-sm text-gray-400 mt-3'>Finished job</p>
+          </div>
+
+          <div
+            className="bg-[#1a1f2b] cursor-pointer p-6 rounded-2xl border border-blue-400 hover:scale-105 transition"
+            onClick={() => setActiveFilter("All")}
+          >
+            <h2 className='text-gray-400 text-sm'>Total Vehicles</h2>
+            <p className='text-3xl font-bold mt-3'>{vehicles.length}</p>
+            <p className='text-sm text-gray-400 mt-3'>Workshop records</p>
           </div>
 
         </div>
