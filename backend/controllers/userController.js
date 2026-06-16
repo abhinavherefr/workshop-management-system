@@ -12,7 +12,7 @@ export const registerUser = async (req, res) => {
     try {
         const { name, email, password } = req.body;
 
-        if (!validator.status(400).isEmail(email)) {
+        if (!validator.isEmail(email)) {
             return res.json({
                 success: false,
                 message: "Please enter a valid email"
@@ -97,3 +97,4 @@ export const loginUser = async (req, res) => {
         });
     }
 };
+

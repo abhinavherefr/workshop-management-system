@@ -43,8 +43,9 @@ const VehicleModel = new mongoose.Schema({
         required: true
     },
     assignedTo: {
-        type: String,
-        default: null,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Mechanic",
+        default: null
     },
     estimatedTime: {
         type: Number,

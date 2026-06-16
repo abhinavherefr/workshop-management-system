@@ -41,7 +41,7 @@ const Home = () => {
 
   })
 
-  console.log(vehicles)
+  // console.log(vehicles)
 
 
   return (

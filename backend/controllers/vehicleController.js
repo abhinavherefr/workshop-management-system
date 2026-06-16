@@ -353,6 +353,7 @@ export const getVehicleHistory = async (req, res) => {
 export const getVehicleById = async (req, res) => {
     try {
         const vehicle = await Vehicle.findById(req.params.id)
+                            .populate("assignedTo", "name specialization")
 
         const history = await Vehicle.find({
             vehicleNumber: vehicle.vehicleNumber
@@ -372,6 +373,42 @@ export const getVehicleById = async (req, res) => {
         })
     } catch (error) {
         res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+
+
+export const assignMechanic = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { mechanicId } = req.body;
+
+        const vehicle = await Vehicle.findById(id)
+
+        if (!vehicle) {
+            return res.json({
+                success: false,
+                message: "Vehicles not found"
+            })
+        }
+
+        vehicle.assignedTo = mechanicId;
+
+        await vehicle.save();
+
+        await vehicle.populate("assignedTo", "name specialization");
+
+        return res.json({
+            success: true,
+            message: "Mechanic assigned successfully",
+            vehicle
+        })
+
+
+    } catch (error) {
+        return res.status(500).json({
             success: false,
             message: error.message
         })

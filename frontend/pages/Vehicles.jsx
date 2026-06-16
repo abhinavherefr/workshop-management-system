@@ -13,7 +13,7 @@ const Vehicles = () => {
     const [vehicles, setVehicles] = useState([])
     const [search, setSearch] = useState("")
     const [loading, setLoading] = useState(true)
-
+    
     const navigate = useNavigate();
 
     const getStatusStyle = (status) => {

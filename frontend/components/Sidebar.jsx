@@ -24,6 +24,7 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
                 <li><NavLink onClick={() => setShowSidebar(false)} to="/add" className={linkStyle}>Add Vehicles</NavLink></li>
                 <li><NavLink onClick={() => setShowSidebar(false)} to="/all" className={linkStyle}>All Vehicles</NavLink></li>
                 <li><NavLink onClick={() => setShowSidebar(false)} to="/history" className={linkStyle}>Vehicle History</NavLink></li>
+                <li><NavLink onClick={() => setShowSidebar(false)} to="/mechanic" className={linkStyle}>Mechanic Dashboard</NavLink></li>
             </ul>
         </div>
     )

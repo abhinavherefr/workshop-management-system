@@ -5,6 +5,7 @@ import { registerUser } from "./controllers/userController.js"
 import userRouter from "./routes/userRouter.js"
 import cors from "cors"
 import vehicleRouter from "./routes/vehicleRouter.js"
+import mechanicRouter from "./routes/mechanicRoutes.js"
 
 
 // App Config 
@@ -25,6 +26,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/user", userRouter)
 app.use("/api/vehicle", vehicleRouter)
+app.use("/api/mechanic", mechanicRouter)
 // DB Connection
 connectDB();
 

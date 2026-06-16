@@ -112,7 +112,7 @@ const VehicleHistory = () => {
             {
                 !loading &&
                 vehicles.length === 0 &&
-                vehicleNumber && 
+                vehicleNumber &&
                 !customerHistory && (
                     <p className="text-center text-gray-500 mt-10">
                         No vehicles found
@@ -155,7 +155,7 @@ const VehicleHistory = () => {
 
             {
                 vehicles.length > 0 && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6 w-[90%] md:w-[70%] mx-auto">
+                    <div className="space-y-4">
                         {vehicles.map((item) => (
                             <div
                                 className="cursor-pointer bg-[#1a1f2b] p-5 rounded-xl hover:scale-[1.02] transition"
@@ -188,46 +188,66 @@ const VehicleHistory = () => {
                     <div className="w-[90%] md:w-[70%] mx-auto mt-6 flex flex-col gap-4">
                         <h2 className='text-xl font-semibold'>Service History</h2>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {customerHistory.history.map((visit, index) => (
-                                <div className="bg-[#1a1f2b] p-4 rounded-xl" key={visit._id}>
-                                    <div className="flex flex-col gap-2 mb-3">
-                                        <p className='text-sm text-gray-400'>Visit #{customerHistory.history.length - index}</p>
-                                        <h3 className="font-semibold text-lg">
-                                            {visit.serviceType} Service
-                                        </h3>
-                                        <span className={visit.status === "Completed" ? "bg-green-900 text-green-500 px-2 py-1 rounded-md text-sm w-fit" : visit.status === "Pending" ? "text-yellow-500 bg-yellow-900 w-fit px-2 py-1 rounded-md text-sm" : "text-blue-500 bg-blue-900 w-fit px-2 py-1 rounded-md text-sm"}>
-                                            {visit.status}
-                                        </span>
+                        <div className="space-y-4">
+                            
+                            {
+                                customerHistory.history.map((visit, index) => (
+                                    <div className="flex gap-4" key={visit._id}>
+                                        
+                                        <div className="flex flex-col items-center pt-2 relative">
+                                            <div className="w-3 h-3 rounded-full bg-blue-500 z-10"></div>
+                                            { index !== customerHistory.history.length - 1 && (
+                                                <div className="absolute top-5 bottom-[-24px] w-[2px] bg-gray-700"></div>
+                                            )}
+                                        </div>
+
+                                        <div className="bg-[#1a1f2b] p-4 rounded-xl flex-1">
+                                            <div className="flex flex-col gap-2 mb-3">
+                                                <p className="text-sm text-gray-400">
+                                                    Visit #{customerHistory.history.length - index}
+                                                </p>
+                                                <h3 className="font-semibold text-lg">
+                                                    {visit.serviceType} Service
+                                                </h3>
+
+                                                <span className={visit.status === "Completed"
+                                                ? "bg-green-900 text-green-500 px-2 py-1 rounded-md text-sm w-fit"
+                                                : visit.status === "Pending" ? "text-yellow-500 bg-yellow-900 w-fit px-2 py-1 rounded-xl text-sm"
+                                                : "text-blue-500 bg-blue-900 w-fit px-2 py-1 rounded-md text-sm"
+                                                }>
+                                                    {visit.status}
+                                                </span>
+                                            </div>
+                                            
+                                            <div className="text-sm space-y-1">
+                                                <p> 
+                                                    <span className="text-gray-400">Date: </span>
+                                                    {new Date(visit.createdAt).toLocaleDateString()}
+                                                </p>
+
+                                                <p>
+                                                    <span className="text-gray-400">Odometer: </span>
+                                                    {visit.odometerReading} km
+                                                </p>
+
+                                                <p>
+                                                    <span className="text-gray-400">Problem: </span>
+                                                    {visit.problemDescription || "No description provided"} km
+                                                </p>
+
+                                                <p>
+                                                    <span className="text-gray-400">Slot: </span>
+                                                    {visit.slotNumber ?? "Not Assigned"} km
+                                                </p>
+
+                                            </div>
+
+                                        </div>
+
                                     </div>
-                                    <div className="text-sm">
-                                        <p>
-                                            <span className="text-gray-400">
-                                                Date: {" "}
-                                            </span>
-                                            {new Date(visit.createdAt).toLocaleDateString()}
-                                        </p>
-                                        <p className="">
-                                            <span className="text-gray-400">
-                                                Odometer: {" "}
-                                            </span>
-                                            {visit.odometerReading} km
-                                        </p>
-                                        <p className="">
-                                            <span className="text-gray-400">
-                                                Problem: {" "}
-                                            </span>
-                                            {visit.problemDescription || "No description provided"}
-                                        </p>
-                                        <p className="">
-                                            <span className="text-gray-400">
-                                                Slot: {" "}
-                                            </span>
-                                            {visit.slotNumber ?? "Not Assigned"}
-                                        </p>
-                                    </div>
-                                </div>
-                            ))}
+                                ))
+                            }
+
                         </div>
                     </div>
                 )
