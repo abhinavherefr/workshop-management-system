@@ -9,7 +9,7 @@ const DashboardNav = ({ setShowSidebar }) => {
 
     return (
         <div className="bg-[#0f1117] text-gray-300">
-            <div className="flex justify-between items-center p-4 mb-10">
+            <div className="flex justify-between items-center p-4">
                 <div className="flex items-center justify-center gap-5">
                     <img src="/menu-bar.png" width={20} onClick={() => { setShowSidebar(prev => !prev) }} className='invert cursor-pointer' alt="" />
                     <div className="">

@@ -2,6 +2,7 @@ import { useContext, useState } from 'react'
 import { AuthContext } from '../src/context/AuthContext'
 import axios from 'axios'
 import { toast } from 'react-toastify'
+import { motion } from "framer-motion"
 
 const VehicleHistory = () => {
 
@@ -75,7 +76,12 @@ const VehicleHistory = () => {
 
     return (
 
-        <div className=''>
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4 }}
+
+        >
             <div className="flex items-center justify-center mb-10">
                 <h2 className='text-3xl font-bold text-gray-400'>
                     Vehicle History
@@ -96,7 +102,9 @@ const VehicleHistory = () => {
                                 }
                             }}
                         />
-                        <button
+                        <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
                             disabled={loading}
                             onClick={
                                 searchVehicles
@@ -104,7 +112,7 @@ const VehicleHistory = () => {
                             className='bg-orange-600 cursor-pointer hover:bg-orange-700 px-5 py-3 text-sm rounded-lg font-medium'
                         >
                             {loading ? "Searching..." : "Search"}
-                        </button>
+                        </motion.button>
                     </div>
                 </div>
             </div>
@@ -123,7 +131,12 @@ const VehicleHistory = () => {
             {
                 customerHistory && (
                     <div className="flex justify-center mt-6">
-                        <div className="w-[90%] md:w-[70%]  bg-[#1a1f2b] rounded-xl p-6">
+                        <motion.div
+                            className="w-[90%] md:w-[70%]  bg-[#1a1f2b] rounded-xl p-6"
+                            initial={{ opacity: 0, scale: 0.97 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.3 }}
+                        >
                             <h2 className="text-2xl font-bold mb-2">
                                 {customerHistory.customer.ownerName}
                             </h2>
@@ -131,7 +144,7 @@ const VehicleHistory = () => {
                                 <p className='text-lg'>
                                     <span className="text-gray-400">Phone:</span>
                                     {" "}
-                                    {customerHistory.customer.phone}
+                                    {customerHistory.customerPhone}
                                 </p>
                                 <p className='text-lg'>
                                     <span className="text-gray-400">Vehicle Number:</span>
@@ -148,7 +161,7 @@ const VehicleHistory = () => {
                                     {customerHistory.customer.totalVisits}
                                 </p>
                             </div>
-                        </div>
+                        </motion.div>
                     </div>
                 )
             }
@@ -157,9 +170,13 @@ const VehicleHistory = () => {
                 vehicles.length > 0 && (
                     <div className="space-y-4">
                         {vehicles.map((item) => (
-                            <div
-                                className="cursor-pointer bg-[#1a1f2b] p-5 rounded-xl hover:scale-[1.02] transition"
+                            <motion.div
+                                className="cursor-pointer bg-[#1a1f2b] p-5 rounded-xl "
                                 key={item.vehicleNumber}
+                                initial={{ opacity: 0, y: 15 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                whileHover={{ y: -3, scale: 1.02 }}
+                                transition={{ duration: 0.2 }}
                                 onClick={() => getVehicleHistory(item.vehicleNumber)}
                             >
                                 <h2 className='text-lg font-semibold'>
@@ -177,7 +194,7 @@ const VehicleHistory = () => {
                                 <p className="text-xs text-gray-500 mt-3">
                                     Click to view history
                                 </p>
-                            </div>
+                            </motion.div>
                         ))}
                     </div>
                 )
@@ -185,18 +202,25 @@ const VehicleHistory = () => {
 
             {
                 customerHistory && (
-                    <div className="w-[90%] md:w-[70%] mx-auto mt-6 flex flex-col gap-4">
+                    <motion.div
+                        className="w-[90%] md:w-[70%] mx-auto mt-6 flex flex-col gap-4"
+                    >
                         <h2 className='text-xl font-semibold'>Service History</h2>
 
                         <div className="space-y-4">
-                            
+
                             {
                                 customerHistory.history.map((visit, index) => (
-                                    <div className="flex gap-4" key={visit._id}>
-                                        
+                                    <motion.div
+                                        className="flex gap-4" key={visit._id}
+                                        initial={{ opacity: 0, x: -20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ duration: 1, delay: index * 0.08}}
+                                    >
+
                                         <div className="flex flex-col items-center pt-2 relative">
                                             <div className="w-3 h-3 rounded-full bg-blue-500 z-10"></div>
-                                            { index !== customerHistory.history.length - 1 && (
+                                            {index !== customerHistory.history.length - 1 && (
                                                 <div className="absolute top-5 bottom-[-24px] w-[2px] bg-gray-700"></div>
                                             )}
                                         </div>
@@ -211,16 +235,16 @@ const VehicleHistory = () => {
                                                 </h3>
 
                                                 <span className={visit.status === "Completed"
-                                                ? "bg-green-900 text-green-500 px-2 py-1 rounded-md text-sm w-fit"
-                                                : visit.status === "Pending" ? "text-yellow-500 bg-yellow-900 w-fit px-2 py-1 rounded-xl text-sm"
-                                                : "text-blue-500 bg-blue-900 w-fit px-2 py-1 rounded-md text-sm"
+                                                    ? "bg-green-900 text-green-500 px-2 py-1 rounded-md text-sm w-fit"
+                                                    : visit.status === "Pending" ? "text-yellow-500 bg-yellow-900 w-fit px-2 py-1 rounded-xl text-sm"
+                                                        : "text-blue-500 bg-blue-900 w-fit px-2 py-1 rounded-md text-sm"
                                                 }>
                                                     {visit.status}
                                                 </span>
                                             </div>
-                                            
+
                                             <div className="text-sm space-y-1">
-                                                <p> 
+                                                <p>
                                                     <span className="text-gray-400">Date: </span>
                                                     {new Date(visit.createdAt).toLocaleDateString()}
                                                 </p>
@@ -232,7 +256,7 @@ const VehicleHistory = () => {
 
                                                 <p>
                                                     <span className="text-gray-400">Problem: </span>
-                                                    {visit.problemDescription || "No description provided"} km
+                                                    {visit.problemDescription || "No description provided"}
                                                 </p>
 
                                                 <p>
@@ -244,16 +268,16 @@ const VehicleHistory = () => {
 
                                         </div>
 
-                                    </div>
+                                    </motion.div>
                                 ))
                             }
 
                         </div>
-                    </div>
+                    </motion.div>
                 )
             }
 
-        </div>
+        </motion.div>
     )
 }
 

@@ -100,7 +100,7 @@ const VehicleDetails = () => {
 
     return (
         <div className="min-h-screen bg-[#0f1117] text-white p-6">
-            <button onClick={() => navigate(-1)} className="mb-4 text-sm text-gray-400 hover:text-white transition cursor-pointer mt-[-px]"> ← Back </button>
+            <button onClick={() => navigate(-1)} className=" mb-4 text-sm text-gray-400 hover:text-white transition cursor-pointer"> ← Back </button>
             <div className="max-w-5xl mx-auto space-y-6 bg-[#1a1f2b] rounded-2xl p-6 grid md:grid-cols-2 gap-6">
                 <div className="space-y-5">
                     <div className="">
@@ -155,7 +155,7 @@ const VehicleDetails = () => {
                                     </div>
                                 ) : (
                                     <div className="">
-                                        Mechanic Assigned: {vehicle?.assignedTo?.name || "Yet to assign"}
+                                        <span className="text-gray-500">Mechanic Assigned:</span> {vehicle?.assignedTo?.name || "Yet to assign"}
                                     </div>
                                 )
                             }

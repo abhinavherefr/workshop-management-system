@@ -4,7 +4,7 @@ import { AuthContext } from '../src/context/AuthContext'
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import SlotBoard from '../components/SlotBoard';
-
+import { motion } from "framer-motion"
 
 const Vehicles = () => {
 
@@ -13,7 +13,7 @@ const Vehicles = () => {
     const [vehicles, setVehicles] = useState([])
     const [search, setSearch] = useState("")
     const [loading, setLoading] = useState(true)
-    
+
     const navigate = useNavigate();
 
     const getStatusStyle = (status) => {
@@ -110,7 +110,12 @@ const Vehicles = () => {
     }
 
     return (
-        <div className='min-h-screen p-6'>
+        <motion.div
+            className='min-h-screen p-6'
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4 }}
+        >
 
             <SlotBoard vehicles={vehicles} />
             <div className="mb-6">
@@ -145,10 +150,14 @@ const Vehicles = () => {
                     )
                 })
                     .map((item) => (
-                        <div
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            whileHover={{ y: -5, scale: 1.02 }}
+                            transition={{ duration: 0.15 }}
                             onClick={() => navigate(`/vehicle/${item._id}`)}
                             key={item._id}
-                            className='bg-[#1a1f2b] rounded-2xl p-5 shadow-lg hover:bg-[#232a3a] hover:scale-[1.02] hover:shadow-2xl transition duration-400 border border-transparent hover:border-[#2a3142] cursor-pointer'
+                            className='bg-[#1a1f2b] rounded-2xl p-5 shadow-lg border border-transparent hover:border-[#2a3142] cursor-pointer'
                         >
                             <div className='flex justify-between items-start mb-5'>
                                 <div className="">
@@ -203,22 +212,25 @@ const Vehicles = () => {
                                 </span>
 
                                 {item.status === "In Progress" && (
-                                    <button
+                                    <motion.button
                                         onClick={(e) => {
                                             e.stopPropagation()
                                             updateStatus(item._id, "Completed")
                                         }}
-                                        className='text-sm px-3 py-1 rounded-xl bg-green-600 hover:bg-green-700 text-white transition'>
+                                        whileHover={{ scale: 1.05, cursor: "pointer" }}
+                                        whileTap={{ scale: 0.95 }}
+                                        className='text-sm px-3 py-1 rounded-xl bg-green-600 hover:bg-green-700 text-white transition'
+                                    >
                                         Mark Completed
-                                    </button>
+                                    </motion.button>
                                 )}
 
                             </div>
 
-                        </div>
+                        </motion.div>
                     ))}
             </div>
-        </div>
+        </motion.div>
     )
 }
 

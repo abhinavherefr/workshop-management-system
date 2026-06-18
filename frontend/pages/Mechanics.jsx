@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import axios from "axios"
 import { AuthContext } from '../src/context/AuthContext'
 import { toast } from 'react-toastify'
+import { motion } from "framer-motion"
 
 const Mechanics = () => {
 
@@ -95,7 +96,12 @@ const Mechanics = () => {
     }, [token])
 
     return (
-        <div className="text-gray-200 max-w-7xl mx-auto px-4 py-8">
+        <motion.div
+            className="text-gray-200 max-w-7xl mx-auto px-4 py-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4 }}
+        >
 
             {/* Header */}
             <div className="flex items-center justify-between mb-10">
@@ -130,7 +136,13 @@ const Mechanics = () => {
 
                 {/* Add Mechanic Form */}
                 {showAddMechanic && (
-                    <div className="bg-[#1a1f2b] p-6 rounded-2xl border border-gray-700/50 h-fit">
+                    <motion.div
+                        className="bg-[#1a1f2b] p-6 rounded-2xl border border-gray-700/50 h-fit"
+                        initial={{ opacity: 0, x: -30 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 1 }}
+
+                    >
 
                         <div className="flex items-center justify-between mb-6">
 
@@ -177,17 +189,20 @@ const Mechanics = () => {
                                 className="bg-[#111827] border border-gray-700 rounded-lg p-3 focus:outline-none focus:border-orange-500"
                             />
 
-                            <button
+                            <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+
                                 disabled={submitting}
                                 type="submit"
                                 className="mt-2 bg-orange-600 hover:bg-orange-700 disabled:opacity-60 p-3 rounded-lg font-medium cursor-pointer"
                             >
                                 {submitting ? "Adding..." : "Add Mechanic"}
-                            </button>
+                            </motion.button>
 
                         </form>
 
-                    </div>
+                    </motion.div>
                 )}
 
                 {/* Mechanics List */}
@@ -213,10 +228,14 @@ const Mechanics = () => {
                         ) : (
                             <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4">
 
-                                {mechanics.map((mechanic) => (
-                                    <div
+                                {mechanics.map((mechanic, index) => (
+                                    <motion.div
                                         key={mechanic._id}
-                                        className="bg-[#1a1f2b] p-5 rounded-xl border border-gray-700/50 hover:border-orange-500/30 transition"
+                                        className="bg-[#1a1f2b] p-5 rounded-xl border border-gray-700/50"
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        whileHover={{ y: -5, scale: 1.02 }}
+                                        transition={{ duration: 0.25, delay: index * 0.25 }}
                                     >
 
                                         <h3 className="font-semibold text-lg">
@@ -233,16 +252,18 @@ const Mechanics = () => {
                                                 {mechanic.specialization}
                                             </span>
 
-                                            <button
+                                            <motion.button
+                                                whileHover={{ scale: 1.08 }}
+                                                whileTap={{ scale: 0.92 }}
                                                 onClick={() => handleDelete(mechanic._id)}
                                                 className="text-red-400 hover:text-red-500 text-sm font-medium cursor-pointer"
                                             >
                                                 Remove
-                                            </button>
+                                            </motion.button>
 
                                         </div>
 
-                                    </div>
+                                    </motion.div>
                                 ))}
 
                             </div>
@@ -253,7 +274,7 @@ const Mechanics = () => {
 
             </div>
 
-        </div>
+        </motion.div>
     )
 }
 

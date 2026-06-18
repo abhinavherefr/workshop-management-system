@@ -1,5 +1,5 @@
 import express from "express"
-import { createVehicle, getVehicles, updateVehicleStatus, deleteVehicle, getVehicleHistory, searchVehicles, getVehicleById, assignMechanic } from "../controllers/vehicleController.js";
+import { createVehicle, getVehicles, updateVehicleStatus, deleteVehicle, getVehicleHistory, searchVehicles, getVehicleById, assignMechanic, updateVehicle } from "../controllers/vehicleController.js";
 import auth from "../middleware/auth.js"
 import upload from "../middleware/multer.js";
 
@@ -15,12 +15,14 @@ vehicleRouter.patch("/status/:id", auth, (req, res, next) => {
 
 vehicleRouter.delete("/:id", auth, deleteVehicle)
 
-vehicleRouter.get("/history/", getVehicleHistory)
+vehicleRouter.get("/history/", auth, getVehicleHistory)
 
 vehicleRouter.get("/search", searchVehicles)
 
 vehicleRouter.get("/:id", auth, getVehicleById)
 
 vehicleRouter.put("/:id/assign-mechanic", auth, assignMechanic)
+
+vehicleRouter.put("/:id", auth, updateVehicle)
 
 export default vehicleRouter;

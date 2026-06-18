@@ -1,10 +1,13 @@
+import { useContext } from 'react'
 import { NavLink } from 'react-router-dom'
+import { AuthContext } from '../src/context/AuthContext'
 
 const Sidebar = ({ showSidebar, setShowSidebar }) => {
 
 
     const linkStyle = ({ isActive }) =>
         `flex items-center gap-3 px-4 py-3 rounded-xl transition ${isActive ? "bg-[#2a3142] text-white" : "text-gray-400 hover:bg-[#232a3a] hover:text-white"}`
+
 
 
     return (

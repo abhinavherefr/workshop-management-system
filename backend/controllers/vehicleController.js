@@ -414,3 +414,23 @@ export const assignMechanic = async (req, res) => {
         })
     }
 }
+
+export const updateVehicle = async (req, res) => {
+    try {
+        const vehicle = await Vehicle.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new: true }
+        )
+
+        res.json({
+            success: true, vehicle
+        })
+        
+    } catch (error) {
+        res.json({
+            success: false,
+            message: error.message
+        })
+    }
+}
