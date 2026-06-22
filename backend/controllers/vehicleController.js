@@ -353,7 +353,7 @@ export const getVehicleHistory = async (req, res) => {
 export const getVehicleById = async (req, res) => {
     try {
         const vehicle = await Vehicle.findById(req.params.id)
-                            .populate("assignedTo", "name specialization")
+            .populate("assignedTo", "name specialization")
 
         const history = await Vehicle.find({
             vehicleNumber: vehicle.vehicleNumber
@@ -426,7 +426,30 @@ export const updateVehicle = async (req, res) => {
         res.json({
             success: true, vehicle
         })
-        
+
+    } catch (error) {
+        res.json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+
+export const updateCost = async (req, res) => {
+    try {
+        const { laborCost, partsCost } = req.body;
+
+        const totalCost = Number(laborCost) + Number(partsCost)
+
+        const vehicle = await Vehicle.findByIdAndUpdate(req.params.id, {
+            laborCost, partsCost, totalCost
+        }, { new: true })
+
+        res.json({
+            success: true,
+            vehicle
+        })
+
     } catch (error) {
         res.json({
             success: false,

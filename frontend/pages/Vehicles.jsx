@@ -118,6 +118,11 @@ const Vehicles = () => {
         >
 
             <SlotBoard vehicles={vehicles} />
+
+            <h1 className='text-2xl md:text-4xl font-bold text-white mb-8'>
+                Vehicle Problems & Status
+            </h1>
+            
             <div className="mb-6">
                 <input type="text"
                     placeholder='Search vehicle number / owner / phone...'
@@ -127,9 +132,6 @@ const Vehicles = () => {
                 />
             </div>
 
-            <h1 className='text-3xl md:text-4xl font-bold text-white mb-8'>
-                Vehicle Problems & Status
-            </h1>
 
             {
                 vehicles.length === 0 && (

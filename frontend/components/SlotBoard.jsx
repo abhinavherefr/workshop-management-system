@@ -1,21 +1,35 @@
 import React from 'react'
 import { useState } from 'react'
+import { useNavigate } from 'react-router'
 
 
 const SlotBoard = ({ vehicles }) => {
 
     // console.log(vehicles)
-
+    const navigate = useNavigate()
     const getVehicleBySlot = (slot) => {
         return vehicles.find(v => v.slotNumber === slot)
     }
 
     return (
 
-        <div className="flex flex-col ">
-            <div className="mb-10 mt-[-50px] flex items-center justify-center gap-2">
-                <h2 className='text-4xl'>Workshop Slots</h2>
-                <div className="bg-white h-[2px] w-10"></div>
+        <div className="p-6 flex flex-col">
+            <div className="mb-10 grid grid-cols-[2.5rem_1fr_2.5rem] items-center gap-3 sm:flex sm:gap-4">
+                <button
+                    onClick={() => navigate(-1)}
+                    className="w-10 h-10 rounded-full bg-gray-600 hover:bg-gray-500 text-white flex items-center justify-center cursor-pointer transition shrink-0"
+                >
+                    ←
+                </button>
+
+                <div className="flex items-center gap-2 justify-center sm:flex-1">
+                    <h1 className="text-2xl sm:text-3xl font-bold">
+                        Workshop Slots
+                    </h1>
+                    <div className="bg-white h-[2px] w-10"></div>
+                </div>
+
+                <div className="sm:hidden"></div>
             </div>
             <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 md:gap-20 gap-15 mb-20'>
 

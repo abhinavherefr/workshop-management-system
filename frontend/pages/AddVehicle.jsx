@@ -3,6 +3,7 @@ import axios from "axios"
 import { AuthContext } from '../src/context/AuthContext'
 import { toast } from 'react-toastify'
 import { motion } from 'framer-motion'
+import { useNavigate } from 'react-router'
 
 const AddVehicle = () => {
 
@@ -21,6 +22,8 @@ const AddVehicle = () => {
     const [submitting, setsubmitting] = useState(false)
 
     const fileInputRef = useRef(null)
+
+    const navigate = useNavigate()
 
     const submitHandler = async (e) => {
         e.preventDefault();
@@ -116,15 +119,22 @@ const AddVehicle = () => {
     return (
         <motion.form
             onSubmit={submitHandler}
-            className='min-h-full px-4 py-6 flex flex-col items-center gap-6'
+            className='relative min-h-full px-4 py-6 flex flex-col items-center gap-6'
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.4 }}
         >
+            <div className="w-full max-w-4xl grid grid-cols-[2.5rem_1fr_2.5rem] items-center gap-3 sm:flex sm:gap-4">
+                <button type='button' onClick={() => navigate(-1)} className="w-10 h-10 rounded-full bg-gray-600 hover:bg-gray-500 text-white flex items-center justify-center cursor-pointer transition shrink-0"> ← </button>
+                <div className="flex items-center gap-2 justify-center sm:flex-1">
+                    <h1 className="text-2xl sm:text-3xl font-bold">
+                        Vehicle Entry Form
+                    </h1>
+                    <div className="h-[2px] bg-white w-10"></div>
+                </div>
 
-            <div className="text-gray-300 flex flex-row gap-2 items-center justify-center">
-                <h2>Vehicle entry form</h2>
-                <div className="h-[2px] bg-white w-10"></div>
+                <div className="sm:hidden"></div>
+
             </div>
 
             <div className="w-full max-w-4xl">

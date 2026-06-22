@@ -62,6 +62,18 @@ const VehicleModel = new mongoose.Schema({
     },
     vehicleImage: {
         type: String
+    },
+    laborCost: {
+        type: Number, 
+        default: 0
+    },
+    partsCost: {
+        type: Number,
+        default: 0
+    },
+    totalCost: {
+        type: Number,
+        default: 0
     }
 },
     {

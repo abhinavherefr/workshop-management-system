@@ -3,6 +3,7 @@ import { AuthContext } from '../src/context/AuthContext'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { motion } from "framer-motion"
+import { useNavigate } from 'react-router'
 
 const VehicleHistory = () => {
 
@@ -12,6 +13,8 @@ const VehicleHistory = () => {
     // const [selectedVehicle, setSelectedVehicle] = useState(null)
     const [loading, setLoading] = useState(false)
     const { token, backendurl } = useContext(AuthContext)
+
+    const navigate = useNavigate()
 
     const searchVehicles = async () => {
         if (!(vehicleNumber || "").trim()) {
@@ -80,12 +83,18 @@ const VehicleHistory = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.4 }}
-
+            className='p-6'
         >
-            <div className="flex items-center justify-center mb-10">
-                <h2 className='text-3xl font-bold text-gray-400'>
-                    Vehicle History
-                </h2>
+            <div className="w-full max-w-4xl mx-auto grid grid-cols-[2.5rem_1fr_2.5rem] items-center gap-3 mb-10 sm:flex sm:gap-4">
+                <button onClick={() => navigate(-1)} className="w-10 h-10 rounded-full bg-gray-600 hover:bg-gray-500 text-white flex items-center justify-center cursor-pointer transition shrink-0"> ← </button>
+                <div className="flex items-center gap-2 justify-center sm:flex-1">
+                    <h1 className='text-2xl sm:text-3xl font-bold'>
+                        Vehicle History
+                    </h1>
+                    <div className="h-[2px] bg-white w-10"></div>
+                </div>
+                <div className="sm:hidden"></div>
+
             </div>
             <div className="flex items-center justify-center">
 
@@ -103,8 +112,8 @@ const VehicleHistory = () => {
                             }}
                         />
                         <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
                             disabled={loading}
                             onClick={
                                 searchVehicles
@@ -215,7 +224,7 @@ const VehicleHistory = () => {
                                         className="flex gap-4" key={visit._id}
                                         initial={{ opacity: 0, x: -20 }}
                                         animate={{ opacity: 1, x: 0 }}
-                                        transition={{ duration: 1, delay: index * 0.08}}
+                                        transition={{ duration: 1, delay: index * 0.08 }}
                                     >
 
                                         <div className="flex flex-col items-center pt-2 relative">
