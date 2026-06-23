@@ -65,15 +65,15 @@ const VehicleModel = new mongoose.Schema({
     },
     laborCost: {
         type: Number, 
-        default: 0
+        default: null
     },
     partsCost: {
         type: Number,
-        default: 0
+        default: null
     },
     totalCost: {
         type: Number,
-        default: 0
+        default: null
     }
 },
     {

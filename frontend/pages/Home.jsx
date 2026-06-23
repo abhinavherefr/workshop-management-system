@@ -5,29 +5,30 @@ import axios from "axios"
 import { useNavigate } from 'react-router-dom';
 import { motion } from "framer-motion"
 
-
-
 const Home = () => {
 
   const { backendurl, token } = useContext(AuthContext)
   const [vehicles, setVehicles] = useState([])
   const [activeFilter, setActiveFilter] = useState("Pending")
+  const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
 
   useEffect(() => {
     const fetchVehicles = async () => {
       try {
+        setLoading(true)
         const response = await axios.get(`${backendurl}/api/vehicle/all`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
-        }
-        )
+        })
         if (response.data.success) {
           setVehicles(response.data.vehicles)
         }
       } catch (error) {
         toast.error(error.message)
+      } finally {
+        setLoading(false)
       }
     }
     fetchVehicles()
@@ -38,110 +39,157 @@ const Home = () => {
   const completedVehicles = vehicles.filter(item => item.status === "Completed").length
 
   const filteredVehicles = vehicles.filter(item => {
-
     if (activeFilter === "All") return true;
     return item.status === activeFilter
-
   })
 
-  // console.log(vehicles)
+  const cards = [
+    {
+      key: "Pending",
+      label: "Pending Vehicles",
+      sub: "Needs attention",
+      count: pendingVehicles,
+      color: "red",
+    },
+    {
+      key: "In Progress",
+      label: "In Progress",
+      sub: "Work ongoing",
+      count: inProgressVehicles,
+      color: "yellow",
+    },
+    {
+      key: "Completed",
+      label: "Completed",
+      sub: "Finished job",
+      count: completedVehicles,
+      color: "green",
+    },
+    {
+      key: "All",
+      label: "Total Vehicles",
+      sub: "Workshop records",
+      count: vehicles.length,
+      color: "blue",
+    },
+  ]
 
+  const colorMap = {
+    red: {
+      border: "border-red-400/30 hover:border-red-400/60",
+      activeBorder: "border-red-400 shadow-red-400/20",
+      dot: "bg-red-400 shadow-[0_0_8px_rgba(248,113,113,0.6)]",
+      text: "text-red-400",
+    },
+    yellow: {
+      border: "border-yellow-400/30 hover:border-yellow-400/60",
+      activeBorder: "border-yellow-400 shadow-yellow-400/20",
+      dot: "bg-yellow-400 shadow-[0_0_8px_rgba(250,204,21,0.6)]",
+      text: "text-yellow-400",
+    },
+    green: {
+      border: "border-green-400/30 hover:border-green-400/60",
+      activeBorder: "border-green-400 shadow-green-400/20",
+      dot: "bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.6)]",
+      text: "text-green-400",
+    },
+    blue: {
+      border: "border-blue-400/30 hover:border-blue-400/60",
+      activeBorder: "border-blue-400 shadow-blue-400/20",
+      dot: "bg-blue-400 shadow-[0_0_8px_rgba(96,165,250,0.6)]",
+      text: "text-blue-400",
+    },
+  }
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className='min-h-screen bg-[#0f1117] text-white'
+      className='min-h-screen bg-[#0a0d12] text-white'
     >
-      <div className="min-h-screen bg-[#0f1117] text-white">
+      <div className="p-6 sm:p-10 flex flex-col">
 
-        <div className="p-4 flex flex-col md:flex-row gap-6">
+        <div className="mb-8">
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Dashboard</h1>
+            <div className="bg-gradient-to-r from-blue-500 to-transparent h-[2px] w-12 hidden sm:block"></div>
+          </div>
+          <p className="text-gray-500 text-sm mt-1">Workshop overview at a glance</p>
+        </div>
+
+        <div className="flex flex-col md:flex-row gap-6">
 
           {/* LEFT SIDE - CARDS */}
           <div className="md:w-1/3 grid grid-cols-2 md:grid-cols-1 gap-4 md:self-start">
 
-            <motion.div
-              onClick={() => setActiveFilter("Pending")}
-              whileHover={{ y: -5 }}
-              whileTap={{ scale: 0.97 }}
-              className={`bg-[#1a1f2b] cursor-pointer p-6 rounded-2xl border border-red-400 hover:scale-105 ${activeFilter === "Pending" ? "border-red-400 ring-red-400/40" : "border-red-400/40"}`}
-            >
-              <h2 className='text-gray-400 text-sm'>Pending vehicles</h2>
-              <p className='text-3xl font-bold mt-3'>{pendingVehicles}</p>
-              <p className='text-sm text-gray-400 mt-3'>Needs attention</p>
-            </motion.div>
+            {loading ? (
+              [...Array(4)].map((_, i) => (
+                <div key={i} className="bg-[#11151c] border border-white/5 rounded-2xl p-6 h-[120px] animate-pulse" />
+              ))
+            ) : (
+              cards.map((card) => {
+                const c = colorMap[card.color]
+                const isActive = activeFilter === card.key
 
-            <motion.div
-              whileHover={{ y: -5 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={() => setActiveFilter("In Progress")}
-              className={`bg-[#1a1f2b] cursor-pointer p-6 rounded-2xl border border-red-400 hover:scale-105 ${activeFilter === "In Progress" ? "border-yellow-400 ring-yellow-400/40" : "border-yellow-400/40"}`}
-            >
-              <h2 className='text-gray-400 text-sm'>In Progress</h2>
-              <p className='text-3xl font-bold mt-3'>{inProgressVehicles}</p>
-              <p className='text-sm text-gray-400 mt-3'>Work ongoing</p>
-            </motion.div>
+                return (
+                  <motion.div
+                    key={card.key}
+                    onClick={() => setActiveFilter(card.key)}
+                    whileHover={{ y: -4 }}
+                    whileTap={{ scale: 0.97 }}
+                    className={`relative bg-[#11151c] cursor-pointer p-6 rounded-2xl border transition-all duration-200
+                      ${isActive ? `${c.activeBorder} shadow-lg` : c.border}`}
+                  >
+                    <span className={`absolute top-4 right-4 w-2 h-2 rounded-full ${c.dot}`}></span>
 
-            <motion.div
-              whileHover={{ y: -5 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={() => setActiveFilter("Completed")}
-              className={`bg-[#1a1f2b] cursor-pointer p-6 rounded-2xl border border-green-400 hover:scale-105 ${activeFilter === "Completed" ? "border-green-400 ring-green-400/40" : "border-green-400/40"}`}
-            >
-              <h2 className='text-gray-400 text-sm'>Completed</h2>
-              <p className='text-3xl font-bold mt-3'>{completedVehicles}</p>
-              <p className='text-sm text-gray-400 mt-3'>Finished job</p>
-            </motion.div>
-
-            <motion.div
-              className={`bg-[#1a1f2b] cursor-pointer p-6 rounded-2xl border border-blue-400 hover:scale-105 ${activeFilter === "All" ? "border-blue-400 ring-blue-400/40" : "border-blue-400/40"}`}
-              onClick={() => setActiveFilter("All")}
-              whileHover={{ y: -5 }}
-              whileTap={{ scale: 0.97 }}
-            >
-              <h2 className='text-gray-400 text-sm'>Total Vehicles</h2>
-              <p className='text-3xl font-bold mt-3'>{vehicles.length}</p>
-              <p className='text-sm text-gray-400 mt-3'>Workshop records</p>
-            </motion.div>
+                    <h2 className='text-gray-500 text-xs uppercase tracking-wider'>{card.label}</h2>
+                    <p className='text-3xl font-bold mt-3'>{card.count}</p>
+                    <p className={`text-sm mt-2 ${isActive ? c.text : "text-gray-500"}`}>{card.sub}</p>
+                  </motion.div>
+                )
+              })
+            )}
 
           </div>
 
           {/* RIGHT SIDE - LIST */}
-          <div className="md:w-2/3 bg-[#1a1f2b] rounded-2xl p-6">
+          <div className="md:w-2/3 bg-[#11151c] border border-white/5 rounded-2xl p-6">
 
-            {!activeFilter ? (
-              <p className="text-gray-400"></p>
-            ) : (
-              <>
-                <h2 className="text-xl font-semibold mb-4">
-                  {activeFilter} Vehicles
-                </h2>
+            <h2 className="text-lg font-semibold mb-5 flex items-center gap-2">
+              {activeFilter} Vehicles
+              <span className="text-xs font-normal text-gray-500 bg-white/5 px-2 py-0.5 rounded-md">
+                {filteredVehicles.length}
+              </span>
+            </h2>
 
-                <div className="space-y-3">
-                  {filteredVehicles.length === 0 ? (
-                    <p className="text-gray-500 text-sm text-center mt-8">
-                      No {activeFilter} vehicles
-                    </p>
-                  ) : (
-                    filteredVehicles.map(item => (
-                      <motion.div
-                        key={item._id}
-                        initial={{ opacity: 0, x: 15}}
-                        animate={{ opacity: 1, x: 0}}
-                        className="flex justify-between bg-[#0f1117] p-2 text-sm rounded-xl cursor-pointer"
-                        onClick={() => navigate(`/vehicle/${item._id}`)}
-                      >
-                        <span>{item.vehicleNumber}</span>
-                        <span className="text-gray-400">{item.ownerName}</span>
-                      </motion.div>
-                    ))
-
-                  )
-                  }
+            <div className="space-y-2">
+              {loading ? (
+                [...Array(4)].map((_, i) => (
+                  <div key={i} className="h-11 bg-[#0a0d12] rounded-xl animate-pulse" />
+                ))
+              ) : filteredVehicles.length === 0 ? (
+                <div className="border border-dashed border-white/10 rounded-xl py-10 text-center">
+                  <p className="text-gray-500 text-sm">
+                    No {activeFilter.toLowerCase()} vehicles
+                  </p>
                 </div>
-              </>
-            )}
+              ) : (
+                filteredVehicles.map(item => (
+                  <motion.div
+                    key={item._id}
+                    initial={{ opacity: 0, x: 15 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    whileHover={{ x: 4 }}
+                    className="flex justify-between items-center bg-[#0a0d12] border border-white/5 hover:border-white/15 px-4 py-3 text-sm rounded-xl cursor-pointer transition-colors duration-150"
+                    onClick={() => navigate(`/vehicle/${item._id}`)}
+                  >
+                    <span className="font-mono tracking-wide text-white">{item.vehicleNumber}</span>
+                    <span className="text-gray-400">{item.ownerName}</span>
+                  </motion.div>
+                ))
+              )}
+            </div>
 
           </div>
 
@@ -151,6 +199,4 @@ const Home = () => {
   )
 }
 
-
 export default Home
-
