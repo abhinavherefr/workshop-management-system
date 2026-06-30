@@ -25,6 +25,8 @@ const Home = () => {
   const [activeFilter, setActiveFilter] = useState("Pending")
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
+  const { role } = useContext(AuthContext)
+  const updatedRole = role.charAt(0).toUpperCase() + role.slice(1).toLowerCase()
 
   useEffect(() => {
     const fetchVehicles = async () => {
@@ -102,7 +104,7 @@ const Home = () => {
 
         <div className="mb-8 flex items-center justify-between flex-wrap gap-4">
           <div>
-            <h1 className="text-2xl sm:text-3xl tracking-tight">Dashboard</h1>
+            <h1 className="text-2xl sm:text-3xl tracking-tight">{updatedRole} Dashboard</h1>
             <p className="text-gray-500 text-sm mt-1">Workshop overview at a glance</p>
           </div>
         </div>
