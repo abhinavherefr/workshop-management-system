@@ -417,23 +417,41 @@ export const assignMechanic = async (req, res) => {
 
 export const updateVehicle = async (req, res) => {
     try {
+        const updateData = {
+            ...req.body
+        };
+
+        if (req.file) {
+            const result = await streamUpload(req.file.buffer);
+
+            if (!result || !result.secure_url) {
+                return res.status(500).json({
+                    success: false,
+                    message: "Image upload failed"
+                });
+            }
+
+            updateData.vehicleImage = result.secure_url;
+        }
+
         const vehicle = await Vehicle.findByIdAndUpdate(
             req.params.id,
-            req.body,
+            updateData,
             { new: true }
-        )
+        );
 
         res.json({
-            success: true, vehicle
-        })
+            success: true,
+            vehicle
+        });
 
     } catch (error) {
-        res.json({
+        res.status(500).json({
             success: false,
             message: error.message
-        })
+        });
     }
-}
+};
 
 export const updateCost = async (req, res) => {
     try {

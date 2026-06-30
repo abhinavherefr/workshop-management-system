@@ -10,6 +10,8 @@ import Layout from '../components/Layout.jsx';
 import VehicleHistory from '../pages/VehicleHistory.jsx';
 import VehicleDetails from '../pages/VehicleDetails.jsx';
 import Mechanics from '../pages/Mechanics.jsx';
+import EditVehicle from '../pages/EditVehicle.jsx';
+import ManageUsers from '../pages/ManageUsers.jsx';
 
 
 const App = () => {
@@ -63,7 +65,20 @@ const App = () => {
               </ProtectedRoute>
             }>
             </Route>
-            
+            <Route path='/edit/:id' element={
+              <ProtectedRoute>
+                <EditVehicle />
+              </ProtectedRoute>
+            }>
+            </Route>
+            <Route path='/users' element={
+              <ProtectedRoute>
+                <ManageUsers />
+              </ProtectedRoute>
+            }>
+
+            </Route>
+
           </Route>
           <Route path='*' element={
             <div className='min-h-screen bg-[#0f1117] text-white flex items-center justify-center text-2xl'>

@@ -51,7 +51,7 @@ const SlotBoard = ({ vehicles }) => {
                     return (
                         <div
                             key={slotNumber}
-                            className={`relative rounded-2xl p-5 lg:p-6 flex flex-col items-center justify-center text-center backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl
+                            className={`relative min-h-[170px] rounded-2xl p-5 lg:p-6 flex flex-col items-center justify-center text-center backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl
                                 ${occupied
                                     ? "bg-red-500/[0.06] border border-red-500/30 hover:border-red-500/50 hover:shadow-red-500/10"
                                     : "bg-emerald-500/[0.06] border border-emerald-400/30 hover:border-emerald-400/50 hover:shadow-emerald-400/10"

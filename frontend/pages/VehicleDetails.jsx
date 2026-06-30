@@ -380,11 +380,27 @@ const VehicleDetails = () => {
 
             <div className="max-w-5xl mx-auto bg-[#11151c] border border-white/5 rounded-2xl p-6 grid md:grid-cols-2 gap-6">
                 <div className="space-y-5">
-                    <div>
-                        <h1 className="text-2xl font-bold tracking-tight">
-                            {vehicle?.ownerName}
-                        </h1>
-                        <p className="text-gray-500 font-mono tracking-wide mt-1">{vehicle?.vehicleNumber}</p>
+                    <div className="flex justify-between items-start">
+                        <div>
+                            <h1 className="text-2xl font-bold tracking-tight">
+                                {vehicle?.ownerName}
+                            </h1>
+                            <p className="text-gray-500 font-mono tracking-wide mt-1">
+                                {vehicle?.vehicleNumber}
+                            </p>
+                        </div>
+
+                        {vehicle.status !== "Completed" && (
+                            <button
+                                onClick={() => navigate(`/edit/${vehicle._id}`)}
+                                className="cursor-pointer bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                            >
+                                <div className="flex gap-3 justify-center items-center">
+                                    <img src="/edit.png"  className='invert w-[15px] h-[15px]' alt="" />
+                                    Edit
+                                </div>
+                            </button>
+                        )}
                     </div>
 
                     <div className="bg-[#0a0d12] border border-white/5 p-4 rounded-xl text-sm space-y-3">

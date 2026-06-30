@@ -3,36 +3,61 @@ import { NavLink } from 'react-router-dom'
 import { AuthContext } from '../src/context/AuthContext'
 
 const navItems = [
-    { to: "/", label: "Home", icon: "🏠" },
-    { to: "/add", label: "Add Vehicle", icon: "➕" },
-    { to: "/all", label: "All Vehicles", icon: "🚗" },
-    { to: "/history", label: "Vehicle History", icon: "🕒" },
-    { to: "/mechanic", label: "Mechanic Dashboard", icon: "🔧" },
+    { to: "/", label: "Home", icon: <img src='/home.png' className='invert w-[15px]' /> },
+
+    {
+        to: "/add",
+        label: "Add Vehicle",
+        icon: <img src='/add.png' className='invert w-[15px]' />,
+        roles: ["admin", "receptionist"]
+    },
+
+    {
+        to: "/mechanic",
+        label: "Mechanic Dashboard",
+        icon: <img src='/wrench.png' className='invert w-[15px]' />,
+        roles: ["admin", "technician"]
+    },
+
+    {
+        to: "/users",
+        label: "Manage Users",
+        icon: <img src='/manage.png' className='invert w-[15px]' />,
+        roles: ["admin"]
+    },
+
+    { to: "/all", label: "All Vehicles", icon: <img src='/all2.png' className='invert w-[15px]' /> },
+    { to: "/history", label: "Vehicle History", icon: <img src='/time.png' className='invert w-[15px]' /> },
 ]
+
 
 const Sidebar = ({ showSidebar, setShowSidebar }) => {
 
     const linkStyle = ({ isActive }) =>
-        `relative flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-sm font-medium ${
-            isActive
-                ? "bg-white/10 text-white"
-                : "text-gray-400 hover:bg-white/5 hover:text-white"
+        `relative flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-sm font-medium ${isActive
+            ? "bg-white/10 text-white"
+            : "text-gray-400 hover:bg-white/5 hover:text-white"
         }`
+
+    const { role } = useContext(AuthContext)
+
+    const visibleNavItems = navItems.filter(item => {
+        if (!item.roles) return true;
+        return item.roles.includes(role);
+    })
 
     return (
         <>
             {/* Backdrop overlay */}
             <div
                 onClick={() => setShowSidebar(false)}
-                className={`fixed inset-0 bg-black/50 backdrop-blur-sm z-40 transition-opacity duration-300 ${
-                    showSidebar ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-                }`}
+                className={`fixed inset-0 bg-black/50 backdrop-blur-sm z-40 transition-opacity duration-300 ${showSidebar ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+                    }`}
             />
 
             {/* Sidebar panel */}
-            <div className={`fixed top-0 left-0 h-full w-64 bg-[#0d1117] pt-6 px-4 border-r border-white/5 transition-transform duration-300 z-50 flex flex-col ${
-                showSidebar ? "translate-x-0" : "-translate-x-full"
-            }`}>
+            <div className={`fixed top-0 left-0 h-full w-64 bg-[#0d1117] pt-6 px-4 border-r border-white/5 transition-transform duration-300 z-50 flex flex-col ${showSidebar ? "translate-x-0" : "-translate-x-full"
+                }`}>
 
                 <div className="flex items-center justify-between mb-6 border-b border-white/5 pb-4 px-2">
                     <h2 className="text-gray-500 text-xs font-semibold tracking-widest">
@@ -47,8 +72,9 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
                     </button>
                 </div>
 
+
                 <ul className='flex flex-col gap-1.5'>
-                    {navItems.map((item) => (
+                    {visibleNavItems.map((item) => (
                         <li key={item.to}>
                             <NavLink
                                 onClick={() => setShowSidebar(false)}

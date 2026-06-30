@@ -10,7 +10,7 @@ const getToken = (id, role) => {
 // API to register user
 export const registerUser = async (req, res) => {
     try {
-        const { name, email, password } = req.body;
+        const { name, email, password, role } = req.body;
 
         if (!validator.isEmail(email)) {
             return res.json({
@@ -41,7 +41,8 @@ export const registerUser = async (req, res) => {
         const newUser = await User.create({
             name,
             email,
-            password: hashedPass
+            password: hashedPass,
+            role
         })
 
         const token = getToken(newUser._id, newUser.role)
@@ -98,3 +99,20 @@ export const loginUser = async (req, res) => {
     }
 };
 
+
+export const getUsers = async (req, res) => {
+    try {
+        const users = await User.find().select("-password");
+
+        res.json({
+            success: true,
+            users
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+}

@@ -23,7 +23,7 @@ vehicleRouter.get("/:id", auth, getVehicleById)
 
 vehicleRouter.put("/:id/assign-mechanic", auth, assignMechanic)
 
-vehicleRouter.put("/:id", auth, updateVehicle)
+vehicleRouter.put("/:id", upload.single("image"), auth, updateVehicle)
 
 vehicleRouter.patch("/cost/:id", auth, updateCost)
 export default vehicleRouter;

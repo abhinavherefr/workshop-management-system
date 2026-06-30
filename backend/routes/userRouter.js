@@ -1,5 +1,5 @@
 import express from "express"
-import { loginUser, registerUser,  } from "../controllers/userController.js";
+import { getUsers, loginUser, registerUser, } from "../controllers/userController.js";
 import { addMechanic, deleteMechanic } from "../controllers/mechanicController.js"
 import auth from "../middleware/auth.js";
 import adminAuth from "../middleware/adminAuth.js";
@@ -8,7 +8,7 @@ import adminAuth from "../middleware/adminAuth.js";
 const userRouter = express.Router();
 
 
-userRouter.post("/register", registerUser)
+userRouter.post("/register", auth, adminAuth, registerUser)
 userRouter.post("/login", loginUser)
 userRouter.get("/me", auth, (req, res) => {
     res.json({
@@ -17,6 +17,12 @@ userRouter.get("/me", auth, (req, res) => {
         user: req.user
     })
 })
+userRouter.get(
+    "/all",
+    auth,
+    adminAuth,
+    getUsers
+);
 
 
 export default userRouter;
