@@ -62,7 +62,7 @@ const Login = () => {
             className="min-h-screen bg-[#0f1117] flex items-center justify-center px-4"
         >
             <div className="w-full max-w-[390px]">
-                <div className="text-white text-center text-3xl font-semibold mb-8">
+                <div className="text-white text-center text-3xl font-medium mb-8">
                     Receptionist Sign In
                 </div>
 
