@@ -139,6 +139,17 @@ export const updateVehicleStatus = async (req, res) => {
             return res.status(404).json({ success: false, message: "Vehicle not und" });
         }
 
+        if (
+            status === "Completed" &&
+            req.user.role !== "technician" &&
+            req.user.role !== "admin"
+        ) {
+            return res.status(403).json({
+                success: false,
+                message: "Only technicians can mark vehicles as completed."
+            })
+        }
+
         const freedSlot = vehicle.slotNumber;
 
         vehicle.status = status;
@@ -149,7 +160,6 @@ export const updateVehicleStatus = async (req, res) => {
 
         await vehicle.save();
 
-        // PROCESS QUEUE ONLY WHEN SLOT FREES
         if (status === "Completed" && freedSlot) {
 
             await Vehicle.findOneAndUpdate(

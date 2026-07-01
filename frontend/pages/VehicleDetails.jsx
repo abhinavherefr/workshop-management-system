@@ -27,7 +27,7 @@ const VehicleDetails = () => {
     const [laborCost, setLaborCost] = useState("")
     const [partsCost, setPartsCost] = useState("")
 
-    const { backendurl, token } = useContext(AuthContext)
+    const { backendurl, token, role } = useContext(AuthContext)
     const { id } = useParams();
 
     const prevHistory = history.slice(1)
@@ -369,6 +369,7 @@ const VehicleDetails = () => {
         doc.save(`${vehicle.vehicleNumber}-invoice.pdf`);
     };
 
+    console.log("Role: ", role)
     return (
         <div className="min-h-screen bg-[#0a0d12] text-white p-6 sm:p-10">
             <button
@@ -396,7 +397,7 @@ const VehicleDetails = () => {
                                 className="cursor-pointer bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
                             >
                                 <div className="flex gap-3 justify-center items-center">
-                                    <img src="/edit.png"  className='invert w-[15px] h-[15px]' alt="" />
+                                    <img src="/edit.png" className='invert w-[15px] h-[15px]' alt="" />
                                     Edit
                                 </div>
                             </button>
@@ -572,13 +573,18 @@ const VehicleDetails = () => {
 
             {vehicle.status !== "Completed" && (
                 <div className="max-w-5xl mx-auto mt-6">
-                    <button
-                        onClick={markCompleted}
-                        disabled={!vehicle.assignedTo}
-                        className="bg-green-600 hover:bg-green-700 px-5 py-2.5 rounded-xl text-sm font-medium transition-colors duration-200 shadow-lg shadow-green-600/20 disabled:bg-gray-700 disabled:text-gray-400 disabled:cursor-not-allowed"
-                    >
-                        Mark Complete
-                    </button>
+                    {(role == "technician" || role == "admin") ? (
+                        <button
+                            onClick={markCompleted}
+                            disabled={!vehicle.assignedTo}
+                            className="bg-green-600 cursor-pointer hover:bg-green-700 px-5 py-2.5 rounded-xl text-sm font-medium transition-colors duration-200 shadow-lg shadow-green-600/20 disabled:bg-gray-700 disabled:text-gray-400 disabled:cursor-not-allowed"
+                        >
+                            Mark Completed
+                        </button>
+                    ) : (
+                        <p className="text-red-500">NO ACCESS</p>
+                    )
+                }
                 </div>
             )}
 
