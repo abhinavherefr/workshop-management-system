@@ -8,8 +8,6 @@ A full-stack **Workshop Management System** built using the **MERN Stack** to st
 
 ## 📸 Screenshots
 
-> Add screenshots here
-
 | Dashboard | Vehicle Details |
 |-----------|-----------------|
 | ![](screenshots/1.png) | ![](screenshots/2.png) |
