@@ -4,6 +4,7 @@ import { AuthContext } from '../src/context/AuthContext'
 import { toast } from 'react-toastify'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router'
+import imageCompression from "browser-image-compression";
 
 const inputClass = "bg-[#0a0d12] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-orange-500/60 focus:ring-2 focus:ring-orange-500/10 transition-all duration-200 w-full"
 const labelClass = "text-xs text-gray-500 uppercase tracking-wider mb-1.5 block"

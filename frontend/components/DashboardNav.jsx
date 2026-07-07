@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { AuthContext } from '../src/context/AuthContext'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const DashboardNav = ({ setShowSidebar }) => {
 
@@ -21,9 +21,11 @@ const DashboardNav = ({ setShowSidebar }) => {
 
                     <div className="flex items-center gap-3">
                         <div>
-                            <h1 className='text-base sm:text-lg font-bold text-white leading-tight'>
-                                Workshop Dashboard
-                            </h1>
+                            <Link to="/">
+                                <h1 className='text-base sm:text-lg font-bold text-white leading-tight'>
+                                    Workshop Dashboard
+                                </h1>
+                            </Link>
                             <p className="text-gray-500 text-xs sm:text-sm mt-0.5">
                                 Manage vehicles and workshop activity
                             </p>
